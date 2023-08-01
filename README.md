@@ -136,6 +136,9 @@ For some more details of what this command does, see [README-CERTS.md](README-CE
 
 We start the image in a docker container by issuing the following command.
 
+    No syslog
+    $ docker run -d -p 8443:8443 --init --volume="$PWD/ssl:/etc/ssl/certs" erlang-dockerwatch
+
     $ docker run -d -p 8443:8443 --init --volume="$PWD/ssl:/etc/ssl/certs" --log-driver=syslog erlang-dockerwatch
     870f979c5b4cdb7a1ba930b020043f50fa7457bf787237706fb27eefaf5fe61d
 
@@ -179,28 +182,28 @@ Create a counter called `cnt` using https with curl:
 
 Read all counters using https with curl as json:
 
-    curl --cacert ssl/dockerwatch-ca.pem -H "Accept: application/json" https://localhost:8443
+    $ curl --cacert ssl/dockerwatch-ca.pem -H "Accept: application/json" https://localhost:8443
     ["cnt"]
 
 Read the counter `cnt` using https with curl as json:
 
-    curl --cacert ssl/dockerwatch-ca.pem -H "Accept: application/json" https://localhost:8443/cnt
+    $ curl --cacert ssl/dockerwatch-ca.pem -H "Accept: application/json" https://localhost:8443/cnt
     {"cnt":0}
 
 Increment the counter `cnt` using http with curl:
 
-    curl -H "Content-Type: application/json" -X POST -d '{}' http://172.17.0.2:8080/cnt
+    $ curl --cacert ssl/dockerwatch-ca.pem -H "Content-Type: application/json" -X POST -d '{}' https://localhost:8443/cnt
 
 Read the counter `cnt` using http with curl as text:
 
-    curl -H "Accept: text/plain" http://172.17.0.2:8080/cnt
+    $ curl --cacert ssl/dockerwatch-ca.pem -H "Accept: text/plain" https://localhost:8443/cnt
     1
 
 Increment the counter `cnt` by 20 using http with curl:
 
-    curl -H "Content-Type: application/json" -X POST -d '{"value":20}' http://172.17.0.2:8080/cnt
+    $ curl --cacert ssl/dockerwatch-ca.pem -H "Content-Type: application/json" -X POST -d '{"value":20}' https://localhost:8443/cnt
 
 Read the counter `cnt` using http with curl as text:
 
-    curl -H "Accept: text/plain" http://172.17.0.2:8080/cnt
+    $ curl --cacert ssl/dockerwatch-ca.pem -H "Accept: text/plain" https://localhost:8443/cnt
     21
